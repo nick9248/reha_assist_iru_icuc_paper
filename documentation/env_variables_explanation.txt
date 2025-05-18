@@ -1,0 +1,7 @@
+# Paths
+BASE_DATASET : is the address of the raw dataset which we applied anonymization on it
+ANONYMIZED_BASE_DATASET : is the address of the anonymized dataset which we applied preprocessing on it 
+OUTPUT_FOLDER = is where we save the results
+LOG_FOLDER = is where we save the logs
+PLOTS = is where we save the plots
+DATASET = is the address of the cleaned dataset that we do analysis on it

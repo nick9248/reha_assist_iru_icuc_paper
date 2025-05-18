@@ -1,0 +1,58 @@
+
+### Imputation Process Documentation
+
+#### 1. Overview
+This document provides a comprehensive overview of the imputation process performed on the dataset.
+The goal of this step was to **fill missing values** in the column `Verlauf_entspricht_NBE` while ensuring
+that all imputed values remain binary (`0` or `1`).
+
+#### 2. Data Loading & Filtering
+- The raw dataset was loaded from the file specified in the `.env` variable `BASE_DATASET`.
+- Initial dataset shape: **(3662, 8)**
+- Filtering applied:
+  - Removed rows where `Telefonat` was `2` or `4`.
+- Filtered dataset shape: **(3427, 8)**
+- Missing values before imputation:
+  - `Verlauf_entspricht_NBE`: **295 missing values**.
+
+#### 3. Imputation Methods Applied
+Each of the following imputation methods was applied, and missing values were filled:
+
+| Method       | Missing Values After | Unique Values After |
+|-------------|---------------------|----------------------|
+| Mean        | 0                   | [0.77618135, 1.0, 0.0] ❌ |
+| Median      | 0                   | [1.0, 0.0] ✅ |
+| Mode        | 0                   | [1.0, 0.0] ✅ |
+| KNN         | 0                   | [1, 0] ✅ |
+| Hot-Deck    | 0                   | [1.0, 0.0] ✅ |
+| Autoencoder | 0                   | [1, 0] ✅ |
+
+#### 4. Evaluation Process
+- A **frequency distribution plot** was generated for each imputation method.
+- The plot was saved in the output directory:
+  - `OUTPUT_FOLDER/plots/step1/imputation_evaluation.png`
+
+#### 5. Best Imputation Method Selection
+**Criteria:**
+- The best imputation method must retain only binary values (`0` or `1`).
+- The method should closely match the original data distribution.
+
+**Results:**
+- **Mean imputation introduced a non-binary value (0.77618135) → Disqualified.**
+- **KNN, Autoencoder, Median, Mode, and Hot-Deck retained only binary values → Valid choices.**
+- **Median was initially selected as the best method.**
+- **However, KNN or Autoencoder is an equally valid alternative if the closest match to original data is preferred.**
+
+#### 6. Log Information
+A complete log of the process was saved in:
+  - `LOG_FOLDER/step1/ingestion_preprocessing_log.txt`
+
+#### 7. Next Steps
+- The dataset imputed with **KNN, Autoencoder, or Median** should be used for further analysis.
+- If validation against external benchmarks is available, compare results.
+
+#### 8. Summary
+✅ **Imputation completed successfully.**  
+✅ **Missing values were handled correctly.**  
+✅ **Binary constraints were maintained.**  
+✅ **Final recommendation: Use KNN or Autoencoder for best results.**
